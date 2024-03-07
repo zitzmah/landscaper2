@@ -37,18 +37,35 @@ def work():
         if weapon["name"] == weapon_name:
             player["money"] += weapon["money"]
             print("you earned $",weapon["money"], "you now have $", player["money"])
-            break
     win()
 
 def upgrade():
     print("you chose to upgrade")
-    player["weapon"] += 1
-    print(weapons[player["weapon"]])
+    weapon_name = player["weapon"]
+    for i in range(len(weapons)):
+        if weapons[i]["name"] == weapon_name:
+            if i+1 < len(weapons):
+                if player["money"] >= weapons[i+1]["price"]:
+                    player["weapon"] = weapons[i+1]["name"]
+                    player["money"] -= weapons[i+1]["price"]
+                    print("you upgraded to using",player["weapon"], "and you have $", player["money"])
+                    getInput()
+                else:
+                    print("you don't have enough money to upgrade to ", weapons[i+1]["name"])
+                    getInput()
+            else:
+                print("you already have the best tools available")
+                getInput()
 
 def quitGame():
     print("game ends")
 
 def win():
-    getInput()
+    weapon_name = player["weapon"]
+    if weapon_name == "starving students" and player["money"] >= 1000:
+        print("you win!")
+        quitGame()
+    else:
+        getInput()
 
 getInput()
